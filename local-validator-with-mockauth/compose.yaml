@@ -53,7 +53,6 @@ services:
         condition: service_started
       postgres-splice:
         condition: service_healthy
-    restart: always
     networks:
       - ${DOCKER_NETWORK:-splice_validator}
 
@@ -111,7 +110,6 @@ services:
         condition: service_started
       postgres-splice:
         condition: service_healthy
-    restart: always
     networks:
       - ${DOCKER_NETWORK:-splice_validator}
     volumes:
@@ -160,7 +158,6 @@ services:
       - ans-web-ui
       - wallet-web-ui
       - validator
-    restart: always
     networks:
       - ${DOCKER_NETWORK:-splice_validator}
     healthcheck:
