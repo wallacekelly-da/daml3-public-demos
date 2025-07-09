@@ -1,12 +1,19 @@
 # Daml Public Demos
 
-Each demo is in its own Git branch.
+Copyright © 2025 Digital Asset (Switzerland) GmbH and/or its affiliates  
+Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+## Demo branches
+
+Each demo is in its own Git branch. Browse the demos [here](https://github.com/wallacekelly-da/daml3-public-demos/branches/all).
 
 To checkout a demo using SSH, use:
 
 ```
 git clone \
-  git@github.com:wallacekelly-da/daml-public-demos.git \
+  git@github.com:wallacekelly-da/daml3-public-demos.git \
   --single-branch \
   --depth 1 \
   --branch <demo branch of interest> \
@@ -17,7 +24,7 @@ Or using HTTPS:
 
 ```
 git clone \
-  https://github.com/wallacekelly-da/daml-public-demos.git \
+  https://github.com/wallacekelly-da/daml3-public-demos.git \
   --single-branch \
   --depth 1 \
   --branch <demo branch of interest> \
