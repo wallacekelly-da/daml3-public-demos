@@ -1,0 +1,25 @@
+{
+  "tokenCallbacks": [
+    {
+      "issuerId": "mockauth",
+      "tokenExpiry": 3600,
+      "requestMappings": [
+        {
+          "requestParam": "client_id",
+          "match": "validator-client-id",
+          "claims": {
+            "aud": "http://validator.localhost",
+            "sub": "ledger-api-user"
+          }
+        },
+        {
+          "requestParam": "client_id",
+          "match": "ui-client-id",
+          "claims": {
+            "aud": "http://validator.localhost"
+          }
+        }
+      ]
+    }
+  ]
+}
