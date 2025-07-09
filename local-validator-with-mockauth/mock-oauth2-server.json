@@ -1,0 +1,32 @@
+{
+  "tokenCallbacks": [
+    {
+      "issuerId": "mockauth",
+      "tokenExpiry": 3600,
+      "requestMappings": [
+        {
+          "requestParam": "client_id",
+          "match": "validator-client-id",
+          "claims": {
+            "aud": "${audience}",
+            "sub": "ledger-api-user"
+          }
+        },
+        {
+          "requestParam": "client_id",
+          "match": "wallet-ui-client-id",
+          "claims": {
+            "aud": "https://validator.example.com"
+          }
+        },
+        {
+          "requestParam": "client_id",
+          "match": "ans-ui-client-id",
+          "claims": {
+            "aud": "https://validator.example.com"
+          }
+        }
+      ]
+    }
+  ]
+}

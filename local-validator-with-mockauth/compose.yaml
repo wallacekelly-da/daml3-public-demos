@@ -49,6 +49,8 @@ services:
       - CANTON_PARTICIPANT_POSTGRES_DB=participant-${MIGRATION_ID}
       - CANTON_PARTICIPANT_POSTGRES_PORT=${SPLICE_DB_PORT}
     depends_on:
+      mockauth:
+        condition: service_started
       postgres-splice:
         condition: service_healthy
     restart: always
@@ -105,6 +107,8 @@ services:
             }
       - ADDITIONAL_CONFIG_GLOBAL_DOMAIN_UPGRADE_DUMP_PATH=canton.validator-apps.validator_backend.domain-migration-dump-path = "/domain-upgrade-dump/domain_migration_dump.json"
     depends_on:
+      mockauth:
+        condition: service_started
       postgres-splice:
         condition: service_healthy
     restart: always
@@ -165,3 +169,16 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+
+  mockauth:
+    image: ghcr.io/navikt/mock-oauth2-server:2.2.1
+    volumes:
+      - ./mock-oauth2-server.json:/host/mock-oauth2-server.json
+    environment:
+      - LOG_LEVEL=DEBUG
+      - JSON_CONFIG_PATH=/host/mock-oauth2-server.json
+    ports:
+      - 8080:8080
+    hostname: mockauth
+    networks:
+      - ${DOCKER_NETWORK:-splice_validator}
