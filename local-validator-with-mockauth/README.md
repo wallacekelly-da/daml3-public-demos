@@ -15,9 +15,9 @@ serving as the Identity Provider.
 
 Why? for purposes of testing, diagnostics, and demo on your local machine.
 
-## Checkout this demo
+## Clone this demo
 
-To checkout a demo using SSH, use:
+To clone a demo using SSH, use:
 
 ```
 git clone \
@@ -45,7 +45,7 @@ And then CD into the folder.
 cd local-validator-with-mockauth/local-validator-with-mockauth
 ```
 
-## Download the validator Docker Compose
+## Download the Validator Docker Compose
 
 Based on <https://docs.dev.sync.global/validator_operator/validator_compose.html#compose-validator>:
 
@@ -87,12 +87,76 @@ Based on <https://docs.dev.sync.global/validator_operator/validator_compose.html
     export MY_WALLET_NAME=???
     ```
 
-7. (Optional) Remove the following lines from the `compose.yaml` file:  
+## Optionally tweak the Docker Compose
+
+1. Remove the following lines from the `compose.yaml` file:  
    (I find it easier to debug failures.)
 
     ```
     restart: always
     ```
+
+2. Add the following to the `nginx.conf` to expose the `participant.localhost`'s JSON Ledger API:
+
+    ```
+    location /api/ {
+      proxy_pass http://participant:7575/;
+    }
+    ```
+
+    ```
+    curl http://participant.localhost/api/readyz
+    ```
+
+3. Add the following to the `nginx.conf` to expose the `participant.localhost`'s gRPC Ledger API:
+
+    ```
+    server {
+      listen 5001;
+      http2 on;
+      server_name participant.localhost;
+      location / {
+        grpc_pass grpc://participant:5001;
+      }
+    }
+    server {
+      listen 5002;
+      http2 on;
+      server_name participant.localhost;
+      location / {
+        grpc_pass grpc://participant:5002;
+      }
+    }
+    ```
+
+    _And_ add the following to the `compose.yaml` _for the nginx service_:  
+    (not the participant service)
+
+    ```
+    ports:
+      - 5001:5001
+      - 5002:5002
+    ```
+
+    _And_ add the following to the `/etc/hosts` file:  
+    (because `grpcurl` doesn't special-case the .localhost extension)
+
+    ```
+    # Added by Wallace, July 9, 2025
+    # So that grpcurl would recognized the host name
+
+    127.0.0.1      participant.localhost
+    ```
+
+    _And_ confirm it works with:
+
+    ```
+    grpcurl --plaintext participant.localhost:5001 list
+    ```
+
+_Note:_ The Validator APIs are already exposed via the `nginx.conf`. For example,  
+`curl http://wallet.localhost/api/validator/v0/validator-user`.
+
 
 ## Add a mock-oauth2-server service
 
@@ -228,6 +292,10 @@ Based on <https://docs.dev.sync.global/validator_operator/validator_compose.html
         | jq
     ```
 
-4. Confirm that <http://wallet.localhost> redirects to the login page.
+4. Confirm the Validator API is exposed:
 
-5. Login with the value of `MY_WALLET_NAME`.
+    <http://wallet.localhost/api/validator/v0/validator-user>
+
+5. Confirm that <http://wallet.localhost> redirects to the login page.
+
+6. Login with the value of `MY_WALLET_NAME`.
