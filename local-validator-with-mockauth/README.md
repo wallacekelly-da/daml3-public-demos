@@ -299,3 +299,8 @@ _Note:_ The Validator APIs are already exposed via the `nginx.conf`. For example
 5. Confirm that <http://wallet.localhost> redirects to the login page.
 
 6. Login with the value of `MY_WALLET_NAME`.
+
+## Install the DA Utilities
+
+See <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-setup-docker-compose.html>.
+

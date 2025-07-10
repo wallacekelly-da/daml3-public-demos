@@ -48,6 +48,7 @@ services:
       - CANTON_PARTICIPANT_POSTGRES_PASSWORD=${SPLICE_DB_PASSWORD}
       - CANTON_PARTICIPANT_POSTGRES_DB=participant-${MIGRATION_ID}
       - CANTON_PARTICIPANT_POSTGRES_PORT=${SPLICE_DB_PORT}
+      - CANTON_PARTICIPANT_JSON_API_SERVER_PATH_PREFIX=/api/json-api
     depends_on:
       mockauth:
         condition: service_started
@@ -148,6 +149,19 @@ services:
     networks:
       - ${DOCKER_NETWORK:-splice_validator}
 
+  utility-ui:
+    image: "digitalasset-canton-network-utility-docker.jfrog.io/frontend:${FRONTEND_IMAGE_VERSION}"
+    environment:
+      - AUTH_AUTHORITY=${AUTH_AUTHORITY}
+      - AUTH_CLIENT_ID=${AUTH_CLIENT_ID}
+      - AUTH_AUDIENCE=${AUTH_AUDIENCE}
+      - UTILITY_APP_OPERATOR_PARTY_ID=${UTILITY_APP_OPERATOR_PARTY_ID}
+    depends_on:
+      - participant
+      - validator
+    networks:
+      - ${DOCKER_NETWORK:-splice_validator}
+
   nginx:
     image: "nginx:${NGINX_VERSION}"
     volumes:
@@ -160,6 +174,7 @@ services:
       - ans-web-ui
       - wallet-web-ui
       - validator
+      - utility-ui
     networks:
       - ${DOCKER_NETWORK:-splice_validator}
     healthcheck:
