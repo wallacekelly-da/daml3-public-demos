@@ -14,6 +14,14 @@
         },
         {
           "requestParam": "client_id",
+          "match": "utility-ui-client-id",
+          "claims": {
+            "aud": "http://validator.localhost",
+            "sub": "da-wallace-1"
+          }
+        },
+        {
+          "requestParam": "client_id",
           "match": "ui-client-id",
           "claims": {
             "aud": "http://validator.localhost"

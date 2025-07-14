@@ -148,6 +148,19 @@ services:
     networks:
       - ${DOCKER_NETWORK:-splice_validator}
 
+  utility-ui:
+    image: "digitalasset-canton-network-utility-docker.jfrog.io/frontend:${FRONTEND_IMAGE_VERSION}"
+    environment:
+      - AUTH_AUTHORITY=${AUTH_AUTHORITY}
+      - AUTH_CLIENT_ID=${AUTH_CLIENT_ID}
+      - AUTH_AUDIENCE=${AUTH_AUDIENCE}
+      - UTILITY_APP_OPERATOR_PARTY_ID=${UTILITY_APP_OPERATOR_PARTY_ID}
+    depends_on:
+      - participant
+      - validator
+    networks:
+      - ${DOCKER_NETWORK:-splice_validator}
+
   nginx:
     image: "nginx:${NGINX_VERSION}"
     volumes:
@@ -157,6 +170,7 @@ services:
       - 5002:5002
       - 80:80
     depends_on:
+      - utility-ui
       - ans-web-ui
       - wallet-web-ui
       - validator
