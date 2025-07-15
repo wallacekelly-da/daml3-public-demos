@@ -150,6 +150,7 @@ services:
 
   utility-ui:
     image: "digitalasset-canton-network-utility-docker.jfrog.io/frontend:${FRONTEND_IMAGE_VERSION}"
+    platform: linux/amd64
     environment:
       - AUTH_AUTHORITY=${AUTH_AUTHORITY}
       - AUTH_CLIENT_ID=${AUTH_CLIENT_ID}
