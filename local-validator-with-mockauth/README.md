@@ -396,13 +396,20 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
     docker volume rm splice-validator_domain-upgrade-dump
     ```
 
-2. Start the Docker Compose, _with authentication enabled_ (`-a`).
+2. Perform a `docker login` to the CN Utilities container registry.  
+   (Use your Artifactory user id and an identity token from [here](https://digitalasset.jfrog.io/ui/user_profile).)
+
+    ```
+    docker login digitalasset-canton-network-utility-docker.jfrog.io
+    ```
+
+3. Start the Docker Compose, _with authentication enabled_ (`-a`).
 
    ```
    ./start.sh -s ${SPONSOR_SV_ADDRESS} -o "${ONBOARDING_SECRET}" -p "${MY_WALLET_NAME}" -m $MIGRATION_ID -w -a
    ```
 
-3. Confirm the `mock-oauth2-server` is working:
+4. Confirm the `mock-oauth2-server` is working:
 
     ```
     curl http://mockauth:8080/mockauth/jwks
@@ -427,27 +434,27 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
         | jq
     ```
 
-4. Confirm the Legder API is exposed:
+5. Confirm the Legder API is exposed:
 
     ```
     grpcurl --plaintext participant.localhost:5001 list
     ```
 
-5. Confirm the JSON Ledger API is exposed:
+6. Confirm the JSON Ledger API is exposed:
 
     ```
     curl http://participant.localhost/api/readyz
     ```
 
-6. Confirm the Validator API is exposed:
+7. Confirm the Validator API is exposed:
 
     ```
     curl http://wallet.localhost/api/validator/v0/validator-user
     ```
 
-7. Confirm that <http://wallet.localhost> redirects to the login page.
+8. Confirm that <http://wallet.localhost> redirects to the login page.
 
-8. Login with the value of `MY_WALLET_NAME`, onboard yourself, and tap Canton Coins.
+9.  Login with the value of `MY_WALLET_NAME`, onboard yourself, and tap Canton Coins.
 
 ## Upload the Utility DAR files
 
