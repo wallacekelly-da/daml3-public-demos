@@ -317,18 +317,36 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
 
     * `migration_id` (e.g, `0`)
     * `version` (e.g, `0.4.4`)
-    * A Super Validator Node, that you have `curl` access to, running the desired version.  
+    * A Super Validator Node, that you have `curl` access to, _running the desired version_. For DA, that means you must be on the VPN.  
       (e.g., `https://scan.sv-1.dev.global.canton.network.digitalasset.com`)
 
-2. Set some environment variables to match the results <https://sync.global/sv-network>:
+2. Set some environment variables to match the results in <https://sync.global/sv-network>:
 
-    ```
-    export MIGRATION_ID=???
+    * The `migration_id` above is stored in `MIGRATION_ID`:
 
-    export IMAGE_TAG=???
+      ```
+      export MIGRATION_ID=???
+      
+      # e.g., export MIGRATION_ID=1
+      ```
+    
+    * The `version` above is stored in `IMAGE_TAG`:
 
-    export SPONSOR_SV_ADDRESS=???
-    ```
+      ```
+      export IMAGE_TAG=???
+      
+      # e.g., export IMAGE_TAG=0.4.5
+      ```
+
+    * The Super Validator's scan URL, replacing `https://scan.` with `https://sv.`:
+
+      ```
+      export SPONSOR_SV_ADDRESS=???
+
+      # e.g., export SPONSOR_SV_ADDRESS=https://sv.sv-1.dev.global.canton.network.digitalasset.com
+
+      # e.g., export SPONSOR_SV_ADDRESS=https://sv.sv-2.dev.global.canton.network.digitalasset.com
+      ```
 
 3. Get an onboarding secret:  
    (for the DA super-validator, this requires logging into the DA VPN)
@@ -341,6 +359,8 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
 
     ```
     export MY_WALLET_NAME=???
+    
+    # e.g., export MY_WALLET_NAME=da-wallace-1
     ```
 
 ## Set local domain names
