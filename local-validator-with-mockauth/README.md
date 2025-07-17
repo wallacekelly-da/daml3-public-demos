@@ -283,9 +283,6 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
     PARTICIPANT_HOST="${PARTICIPANT_HOST:-"localhost"}"
     PARTICIPANT_ADMIN_PORT="${PARTICIPANT_ADMIN_PORT:-"5002"}"
 
-    # Set the base64 option. Use "-b 0" on BSD or macOS.
-    BASE64_OPT="${BASE64_OPT:-"-w 0"}"
-
     # --- MAIN LOGIC ---
 
     if ! ls "$DAR_FOLDER"/*.dar >/dev/null 2>&1; then
@@ -294,7 +291,7 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
     fi
 
     for dar_file in "$DAR_FOLDER"/*.dar; do
-      bytes=$(base64 ${BASE64_OPT} "$dar_file")
+      bytes=$(base64 -w 0 < "$dar_file")
       description=$(basename "$dar_file")
       request=$(printf '{ "dars": [ { "bytes": "%s", "description": "%s" } ], "vet_all_packages": true, "synchronize_vetting": true }' "$bytes" "$description")
 
