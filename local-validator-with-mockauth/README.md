@@ -425,7 +425,6 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
         --data-urlencode 'grant_type=client_credentials' \
         --data-urlencode 'client_id=validator-client-id' \
         --data-urlencode 'client_secret=ignored' \
-        --data-urlencode 'audience=https://validator.example.com' \
         | jq --raw-output \
             '.access_token
             | split(".")
