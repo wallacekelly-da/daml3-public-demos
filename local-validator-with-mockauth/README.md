@@ -326,15 +326,15 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
 
       ```
       export MIGRATION_ID=???
-      
+
       # e.g., export MIGRATION_ID=1
       ```
-    
+
     * The `version` above is stored in `IMAGE_TAG`:
 
       ```
       export IMAGE_TAG=???
-      
+
       # e.g., export IMAGE_TAG=0.4.5
       ```
 
@@ -359,7 +359,7 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
 
     ```
     export MY_WALLET_NAME=???
-    
+
     # e.g., export MY_WALLET_NAME=da-wallace-1
     ```
 
