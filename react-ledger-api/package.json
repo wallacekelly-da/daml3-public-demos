@@ -4,10 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "npm-run-all --parallel dev:vite dev:canton",
+    "build": "daml build --project-root daml/Assets && tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:vite": "vite",
+    "dev:canton": "cd daml/Assets && DAML_SDK_VERSION=3.4.0-snapshot.20250813.1 daml start --json-api-port 7575"
   },
   "dependencies": {
     "axios": "^1.11.0",
