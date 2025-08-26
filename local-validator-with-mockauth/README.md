@@ -470,6 +470,9 @@ Based on <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utili
     ./upload-dars.sh
     ```
 
+6. Edit the [mock-oauth2-server.json](./mock-oauth2-server.json) file,
+   replacing `da-wallace-1` with your own wallet name.
+
 ## Confirm Utilities is working
 
 1. Confirm that <http://utility.localhost> redirects to the login page. Press the Login button.
