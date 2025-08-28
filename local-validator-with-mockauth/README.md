@@ -430,6 +430,21 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
         | jq
     ```
 
+    ```
+    curl --location 'mockauth:8080/mockauth/token' \
+        --header 'Content-Type: application/x-www-form-urlencoded' \
+        --data-urlencode 'grant_type=client_credentials' \
+        --data-urlencode 'client_id=user-client-id' \
+        --data-urlencode 'client_secret=ignored' \
+        --data-urlencode 'username=alice' \
+        | jq --raw-output \
+            '.access_token
+            | split(".")
+            | .[1]
+            | @base64d' \
+        | jq
+    ```
+
 5. Confirm the Legder API is exposed:
 
     ```

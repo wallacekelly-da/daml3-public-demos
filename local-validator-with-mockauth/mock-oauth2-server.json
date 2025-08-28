@@ -14,6 +14,14 @@
         },
         {
           "requestParam": "client_id",
+          "match": "user-client-id",
+          "claims": {
+            "aud": "http://validator.localhost",
+            "sub": "${username}"
+          }
+        },
+        {
+          "requestParam": "client_id",
           "match": "utility-ui-client-id",
           "claims": {
             "aud": "http://validator.localhost",
