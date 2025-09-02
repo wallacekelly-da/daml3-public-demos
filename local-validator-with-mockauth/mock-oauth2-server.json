@@ -2,7 +2,7 @@
   "tokenCallbacks": [
     {
       "issuerId": "mockauth",
-      "tokenExpiry": 3600,
+      "tokenExpiry": 86400,
       "requestMappings": [
         {
           "requestParam": "client_id",
