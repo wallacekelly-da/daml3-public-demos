@@ -473,7 +473,7 @@ Based on <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utili
 
 1. Note the [latest versions of the Daml packages](https://docs.digitalasset.com/utilities/0.7/releases/index.html#current-environment-versions).
 
-2. Download the current version from [JFrog](https://digitalasset.jfrog.io/artifactory/canton-network-utility/):
+2. Download the current version from [docs.digitalasset.com](https://docs.digitalasset.com/utilities/devnet/reference/dar-versions/dar-versions.html).
 
 3. Extract the DAR files into a folder.
 
