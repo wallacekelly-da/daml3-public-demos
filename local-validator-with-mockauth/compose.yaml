@@ -48,6 +48,8 @@ services:
       - CANTON_PARTICIPANT_POSTGRES_PASSWORD=${SPLICE_DB_PASSWORD}
       - CANTON_PARTICIPANT_POSTGRES_DB=participant-${MIGRATION_ID}
       - CANTON_PARTICIPANT_POSTGRES_PORT=${SPLICE_DB_PORT}
+      # required by utilities 0.8.0
+      - CANTON_PARTICIPANT_JSON_API_SERVER_PATH_PREFIX=/api/json-api
     depends_on:
       mockauth:
         condition: service_started
@@ -149,13 +151,29 @@ services:
       - ${DOCKER_NETWORK:-splice_validator}
 
   utility-ui:
-    image: "digitalasset-canton-network-utility-docker.jfrog.io/frontend:${FRONTEND_IMAGE_VERSION}"
+    image: "${UTILITIES_IMAGE_REPO}/frontend:${UTILITIES_IMAGE_VERSION}"
     platform: linux/amd64
     environment:
       - AUTH_AUTHORITY=${AUTH_AUTHORITY}
       - AUTH_CLIENT_ID=${AUTH_CLIENT_ID}
       - AUTH_AUDIENCE=${AUTH_AUDIENCE}
-      - UTILITY_APP_OPERATOR_PARTY_ID=${UTILITY_APP_OPERATOR_PARTY_ID}
+      - UTILITY_APP_UTILITY_BACKEND_URL=${UTILITY_APP_UTILITY_BACKEND_URL}
+    depends_on:
+      - participant
+      - validator
+    networks:
+      - ${DOCKER_NETWORK:-splice_validator}
+
+  # added with utilities 0.8.0
+  darsyncer:
+    image: "${UTILITIES_IMAGE_REPO}/utilities-darsyncer:${UTILITIES_IMAGE_VERSION}"
+    command:
+      - --endpoint=participant:5002
+    environment:
+      - DARS=/dars
+      - CLIENT_ID=${VALIDATOR_AUTH_CLIENT_ID}
+      - CLIENT_SECRET=${VALIDATOR_AUTH_CLIENT_SECRET}
+      - OAUTH_DOMAIN=${AUTH_AUTHORITY}
     depends_on:
       - participant
       - validator

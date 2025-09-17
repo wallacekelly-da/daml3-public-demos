@@ -183,7 +183,7 @@ _Note:_ The Validator APIs are already exposed via the `nginx.conf`. For example
 
 ## Setup the DA Utilities
 
-From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-setup-docker-compose.html>:
+From <https://docs.digitalasset.com/utilities/devnet/setup/install-docker-compose.html>:
 
 1. Append to the `.env` file:
 
@@ -200,24 +200,41 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
     # from https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-setup.html#determine-the-utility-operator-party
     UTILITY_APP_OPERATOR_PARTY_ID=auth0_007c65f857f1c3d599cb6df73775::1220d2d732d042c281cee80f483ab80f3cbaa4782860ed5f4dc228ab03dedd2ee8f9
     # from https://docs.digitalasset.com/utilities/0.7/releases/index.html#current-environment-versions
-    FRONTEND_IMAGE_VERSION=0.7.4
+    FRONTEND_IMAGE_VERSION=0.8.0
 
-    # upload-utilities-dars.sh
-    DAR_FOLDER=utility-dars
-    PARTICIPANT_HOST=participant.localhost
-    CANTON_ADMIN_GRPC_PORT=5002
+    # Utility 0.8.0
+    UTILITIES_IMAGE_REPO="europe-docker.pkg.dev/da-images/public/docker"
+    UTILITIES_IMAGE_VERSION="0.8.0"
+    UTILITY_APP_UTILITY_BACKEND_URL="https://api.utilities.digitalasset-dev.com"
     ```
 
-2. Add a new service to the `compose.yaml`:
+2. Add two new services to the `compose.yaml`:
 
     ```
     utility-ui:
-      image: "digitalasset-canton-network-utility-docker.jfrog.io/frontend:${FRONTEND_IMAGE_VERSION}"
+      image: "${UTILITIES_IMAGE_REPO}/frontend:${UTILITIES_IMAGE_VERSION}"
+      platform: linux/amd64
       environment:
         - AUTH_AUTHORITY=${AUTH_AUTHORITY}
         - AUTH_CLIENT_ID=${AUTH_CLIENT_ID}
         - AUTH_AUDIENCE=${AUTH_AUDIENCE}
-        - UTILITY_APP_OPERATOR_PARTY_ID=${UTILITY_APP_OPERATOR_PARTY_ID}
+        - UTILITY_APP_UTILITY_BACKEND_URL=${UTILITY_APP_UTILITY_BACKEND_URL}
+      depends_on:
+        - participant
+        - validator
+      networks:
+        - ${DOCKER_NETWORK:-splice_validator}
+
+    # added with utilities 0.8.0
+    darsyncer:
+      image: "${UTILITIES_IMAGE_REPO}/utilities-darsyncer:${UTILITIES_IMAGE_VERSION}"
+      command:
+        - --endpoint=participant:5002
+      environment:
+        - DARS=/dars
+        - CLIENT_ID=${VALIDATOR_AUTH_CLIENT_ID}
+        - CLIENT_SECRET=${VALIDATOR_AUTH_CLIENT_SECRET}
+        - OAUTH_DOMAIN=${AUTH_AUTHORITY}
       depends_on:
         - participant
         - validator
@@ -258,7 +275,8 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
         proxy_pass http://validator:5003/api/validator;
       }
 
-      location /api/json-api/ {
+      location /api/json-api {
+        rewrite ^\/(.*) /$1 break;
         proxy_pass http://participant:7575/;
       }
 
@@ -266,46 +284,6 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
         proxy_pass http://utility-ui:8080/;
       }
     }
-    ```
-
-6. Create an `upload-dars.sh` script:
-
-    ```
-    #!/bin/bash
-
-    # --- CONFIGURATION ---
-
-    if [ -f .env ]; then
-      source .env
-    fi
-
-    DAR_FOLDER="${DAR_FOLDER:-"dars/"}"
-    PARTICIPANT_HOST="${PARTICIPANT_HOST:-"localhost"}"
-    PARTICIPANT_ADMIN_PORT="${PARTICIPANT_ADMIN_PORT:-"5002"}"
-
-    # --- MAIN LOGIC ---
-
-    if ! ls "$DAR_FOLDER"/*.dar >/dev/null 2>&1; then
-      echo "Error: No .dar files found in '$DAR_FOLDER'." >&2
-      exit 1
-    fi
-
-    for dar_file in "$DAR_FOLDER"/*.dar; do
-      bytes=$(base64 -w 0 < "$dar_file")
-      description=$(basename "$dar_file")
-      request=$(printf '{ "dars": [ { "bytes": "%s", "description": "%s" } ], "vet_all_packages": true, "synchronize_vetting": true }' "$bytes" "$description")
-
-      echo "Uploading '$description' to ${PARTICIPANT_HOST}..."
-      echo "$request" | grpcurl -plaintext -d @ \
-        ${PARTICIPANT_HOST}:${PARTICIPANT_ADMIN_PORT} \
-        com.digitalasset.canton.admin.participant.v30.PackageService.UploadDar
-    done
-
-    echo "Done."
-    ```
-
-    ```
-    chmod +x ./upload-dars.sh
     ```
 
 ## Set environment variables
@@ -467,32 +445,9 @@ From <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-s
 
 9.  Login with the value of `MY_WALLET_NAME`, onboard yourself, and tap Canton Coins.
 
-## Upload the Utility DAR files
-
-Based on <https://docs.digitalasset.com/utilities/0.7/canton-utility-setup/utility-setup.html#upload-the-dars>:
-
-1. Note the [latest versions of the Daml packages](https://docs.digitalasset.com/utilities/0.7/releases/index.html#current-environment-versions).
-
-2. Download the current version from [docs.digitalasset.com](https://docs.digitalasset.com/utilities/devnet/reference/dar-versions/dar-versions.html).
-
-3. Extract the DAR files into a folder.
-
-4. Set the `DAR_FOLDER` environment variable in the `.env` file.
-
-5. Upload the DAR files into the ledger:
-
-    ```
-    ./upload-dars.sh
-    ```
-
-6. Edit the [mock-oauth2-server.json](./mock-oauth2-server.json) file,
-   replacing `da-wallace-1` with your own wallet name.
-
 ## Confirm Utilities is working
 
-1. Confirm that <http://utility.localhost> redirects to the login page. Press the Login button.
-
-2. Press the "Request Credential User Service" button. In DevNet, it should be approved automatically (evenutally).
+Confirm that <http://utility.localhost> redirects to the login page. Press the Login button.
 
 ## Shutdown the Docker Compose
 
