@@ -65,8 +65,8 @@ Based on <https://docs.dev.sync.global/validator_operator/validator_compose.html
 2. Add the following to the `nginx.conf` to expose the `participant.localhost`'s JSON Ledger API:
 
     ```
-    location /api/ {
-      proxy_pass http://participant:7575/;
+    location /api/json-api/ {
+      proxy_pass http://participant:7575/api/json-api/;
     }
     ```
 
@@ -271,13 +271,11 @@ From <https://docs.digitalasset.com/utilities/devnet/setup/install-docker-compos
       server_name utility.localhost;
 
       location /api/validator/ {
-        rewrite ^\/(.*) /$1 break;
-        proxy_pass http://validator:5003/api/validator;
+        proxy_pass http://validator:5003/api/validator/;
       }
 
-      location /api/json-api {
-        rewrite ^\/(.*) /$1 break;
-        proxy_pass http://participant:7575/;
+      location /api/json-api/ {
+        proxy_pass http://participant:7575/api/json-api/;
       }
 
       location / {
@@ -432,7 +430,7 @@ From <https://docs.digitalasset.com/utilities/devnet/setup/install-docker-compos
 6. Confirm the JSON Ledger API is exposed:
 
     ```
-    curl http://participant.localhost/api/readyz
+    curl http://participant.localhost/api/json-api/readyz
     ```
 
 7. Confirm the Validator API is exposed:
