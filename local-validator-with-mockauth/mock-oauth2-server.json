@@ -1,4 +1,5 @@
 {
+  "interactiveLogin": true,
   "tokenCallbacks": [
     {
       "issuerId": "mockauth",
@@ -25,7 +26,7 @@
           "match": "utility-ui-client-id",
           "claims": {
             "aud": "http://validator.localhost",
-            "sub": "da-wallace-1"
+            "scope": "openid daml_ledger_api offline_access"
           }
         },
         {
