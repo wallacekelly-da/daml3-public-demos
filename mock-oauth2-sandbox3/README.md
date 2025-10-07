@@ -12,7 +12,7 @@ This is helpful for testing and diagnostics of auth-related issues.
 
    ```
    git clone \
-     https://github.com/wallacekelly-da/daml-public-demos.git \
+     https://github.com/wallacekelly-da/daml3-public-demos.git \
        --single-branch \
        --depth 1 \
        --branch mock-oauth2-sandbox3 \
