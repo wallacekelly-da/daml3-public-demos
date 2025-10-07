@@ -56,16 +56,6 @@ This is helpful for testing and diagnostics of auth-related issues.
 
 1. **Get** the participant id from the Admin API:
 
-    <!-- Canton 2.x -->
-    <!-- ```
-    export PARTICIPANT_ID=$( \
-      grpcurl -plaintext localhost:6866 \
-      com.digitalasset.canton.health.admin.v0.StatusService.Status \
-        | jq -r '.success.id' )
-    echo $PARTICIPANT_ID
-    ``` -->
-
-    <!-- Canton 3.x -->
     ```
     export PARTICIPANT_ID=$( \
       grpcurl -plaintext localhost:6866 \
@@ -89,7 +79,7 @@ This is helpful for testing and diagnostics of auth-related issues.
         --header 'Content-Type: application/x-www-form-urlencoded' \
         --data-urlencode 'grant_type=client_credentials' \
         --data-urlencode 'client_id=participant_admin' \
-        --data-urlencode 'client_secret=secret' \
+        --data-urlencode 'client_secret=scope-based' \
         --data-urlencode 'participant_id='"$PARTICIPANT_ID" \
           | jq -r '.access_token')
     echo $ADMIN_TOKEN > at.jwt; \
@@ -129,7 +119,7 @@ This is helpful for testing and diagnostics of auth-related issues.
         --header 'Content-Type: application/x-www-form-urlencoded' \
         --data-urlencode 'grant_type=client_credentials' \
         --data-urlencode 'client_id=alice' \
-        --data-urlencode 'client_secret=secret' \
+        --data-urlencode 'client_secret=scope-based' \
         --data-urlencode 'participant_id='"$PARTICIPANT_ID" \
           | jq -r '.access_token')
     echo $ALICE_TOKEN > alice.jwt; \

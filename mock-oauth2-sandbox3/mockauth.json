@@ -6,9 +6,17 @@
       "requestMappings": [
         {
           "requestParam": "client_secret",
-          "match": "secret",
+          "match": "audience-based",
           "claims": {
             "aud": "https://daml.com/jwt/aud/participant/${participant_id}",
+            "sub": "${client_id}"
+          }
+        },
+        {
+          "requestParam": "client_secret",
+          "match": "scope-based",
+          "claims": {
+            "scope": "daml_ledger_api",
             "sub": "${client_id}"
           }
         }
