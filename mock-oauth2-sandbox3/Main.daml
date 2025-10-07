@@ -1,0 +1,42 @@
+module Main where
+
+import Daml.Script
+
+type AssetId = ContractId Asset
+
+template Asset
+  with
+    issuer : Party
+    owner  : Party
+    name   : Text
+  where
+    ensure name /= ""
+    signatory issuer
+    observer owner
+    choice Give : AssetId
+      with
+        newOwner : Party
+      controller owner
+      do create this with
+           owner = newOwner
+
+setup : Script Asset
+setup = script do
+  alice <- allocatePartyByHint (PartyIdHint "alice")
+  bob <- allocatePartyByHint (PartyIdHint "bob")
+  aliceId <- validateUserId "alice"
+  bobId <- validateUserId "bob"
+  createUser (User aliceId (Some alice)) [CanActAs alice]
+  createUser (User bobId (Some bob)) [CanActAs bob]
+  debugRaw $ show alice
+  debugRaw $ show bob
+  pure $ Asset with
+    issuer = alice
+    owner = bob
+    name = "TV"
+
+createAsset : Asset -> Script()
+createAsset asset = script do
+  assetCid <- submit asset.issuer $ createCmd asset
+  debugRaw $ "Created asset " <> (show assetCid)
+  pure()

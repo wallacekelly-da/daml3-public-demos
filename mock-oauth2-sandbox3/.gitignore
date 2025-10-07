@@ -1,0 +1,4 @@
+/.daml
+/log
+*.jwt
+asset.json
