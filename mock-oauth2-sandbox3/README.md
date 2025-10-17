@@ -64,10 +64,10 @@ This is helpful for testing and diagnostics of auth-related issues.
     echo $PARTICIPANT_ID
     ```
 
-1. **Show** that a token is required to list the packages:
+1. **Show** that a token is required to list the users:
 
     ```
-    curl http://localhost:7575/v2/packages
+    curl http://localhost:7575/v2/users
     ```
 
 1. **Get** a JWT token for the `participant_admin` user:
@@ -86,10 +86,10 @@ This is helpful for testing and diagnostics of auth-related issues.
     cat at.jwt
     ```
 
-1. **List** the packages successfully _with a token_:
+1. **List** the users successfully _with a token_:
 
     ```
-    curl http://localhost:7575/v2/packages \
+    curl http://localhost:7575/v2/users \
       --header "Authorization: Bearer ${ADMIN_TOKEN}"
     ```
 
