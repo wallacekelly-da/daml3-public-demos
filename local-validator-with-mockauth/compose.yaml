@@ -202,6 +202,7 @@ services:
       - ans-web-ui
       - wallet-web-ui
       - validator
+      - c7trust
     networks:
       - ${DOCKER_NETWORK:-splice_validator}
     healthcheck:
@@ -223,3 +224,17 @@ services:
     hostname: mockauth
     networks:
       - ${DOCKER_NETWORK:-splice_validator}
+  
+  c7trust:
+    image: ghcr.io/c7-digital/7trust-client:151
+    environment:
+      - CANTON_LEDGER_URL=http://participant:7575/api/json-api/v2/
+      - OIDC_AUTHORITY=http://mockauth:8080/mockauth
+      - OIDC_CLIENT_ID=c7trust-client-id
+    depends_on:
+      - participant
+    ports:
+      - 8090:8080
+    networks:
+      - ${DOCKER_NETWORK:-splice_validator}
+  

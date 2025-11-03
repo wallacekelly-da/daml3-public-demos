@@ -15,6 +15,14 @@
         },
         {
           "requestParam": "client_id",
+          "match": "c7trust-client-id",
+          "claims": {
+            "aud": "http://validator.localhost",
+            "scope": "openid daml_ledger_api offline_access"
+          }
+        },
+        {
+          "requestParam": "client_id",
           "match": "user-client-id",
           "claims": {
             "aud": "http://validator.localhost",
