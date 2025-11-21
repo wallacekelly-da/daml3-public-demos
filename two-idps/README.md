@@ -2,9 +2,7 @@
 
 This illustrates configuring two IDPs within a Canton Participant.
 
-* A single Canton 3.x process
-* A single private domain
-* A single participant
+* A single Canton 3.x Sandbox
 * Two instances of mockauth
 
 ## Demo Steps
@@ -82,10 +80,10 @@ This illustrates configuring two IDPs within a Canton Participant.
 
 Start a Canton Console:
 
-    ```
-    docker compose --profile console run -it --rm
-    ```
+```
+docker compose --profile console run -it --rm
+```
 
-    ```
-    sandbox.health.status
-    ```
+```
+sandbox.health.status
+```
