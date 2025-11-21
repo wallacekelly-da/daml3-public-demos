@@ -1,0 +1,19 @@
+{
+  "tokenCallbacks": [
+    {
+      "issuerId": "mockissuer1",
+      "tokenExpiry": 3600,
+      "requestMappings": [
+        {
+          "requestParam": "client_id",
+          "match": "Alice",
+          "claims": {
+            "aud": "${participant}",
+            "sub": "${client_id}",
+            "scope": "daml_ledger_api"
+          }
+        }
+      ]
+    }
+  ]
+}

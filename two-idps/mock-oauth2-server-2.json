@@ -1,0 +1,18 @@
+{
+  "tokenCallbacks": [
+    {
+      "issuerId": "mockissuer2",
+      "tokenExpiry": 3600,
+      "requestMappings": [
+        {
+          "requestParam": "client_id",
+          "match": "Bob",
+          "claims": {
+            "aud": "https://daml.com/jwt/aud/participant/${participant}",
+            "sub": "${client_id"
+          }
+        }
+      ]
+    }
+  ]
+}
