@@ -2,7 +2,7 @@
   "tokenCallbacks": [
     {
       "issuerId": "mockissuer1",
-      "tokenExpiry": 3600,
+      "tokenExpiry": 300,
       "requestMappings": [
         {
           "requestParam": "client_id",
@@ -10,7 +10,18 @@
           "claims": {
             "aud": "${participant}",
             "sub": "${client_id}",
-            "scope": "daml_ledger_api"
+            "scope": "daml_ledger_api",
+            "iss": "http://mockauth1:8080/mockissuer1"
+          }
+        },
+        {
+          "requestParam": "client_id",
+          "match": "participant_admin",
+          "claims": {
+            "aud": "${participant}",
+            "sub": "${client_id}",
+            "scope": "daml_ledger_api",
+            "iss": "http://mockauth1:8080/mockissuer1"
           }
         }
       ]

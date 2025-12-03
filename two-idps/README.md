@@ -21,7 +21,7 @@ This illustrates configuring two IDPs within a Canton Participant.
 2. Start the Docker Compose:
 
     ```
-    docker compose up --detach canton
+    docker compose up --detach
     ```
 
 3. Get the participant id:
@@ -63,17 +63,17 @@ This illustrates configuring two IDPs within a Canton Participant.
 5. Get user info for Alice:
 
     ```
-    curl --location 'http://localhost:7575/v2/users/Alice?identity-provider-id=mockauth1' \
-        --header 'Accept: application/json' \
-        --header 'Authorization: Bearer $ALICE_TOKEN'
+    curl --location "http://localhost:7575/v2/users/Alice?identity-provider-id=mockauth1" \
+        --header "Accept: application/json" \
+        --header "Authorization: Bearer $ALICE_TOKEN"
     ```
 
 6. Get user info for Bob:
 
     ```
-    curl --location 'http://localhost:7575/v2/users/Bob?identity-provider-id=mockauth2' \
-        --header 'Accept: application/json' \
-        --header 'Authorization: Bearer $BOB_TOKEN'
+    curl --location "http://localhost:7575/v2/users/Bob?identity-provider-id=mockauth2" \
+        --header "Accept: application/json" \
+        --header "Authorization: Bearer $BOB_TOKEN"
     ```
 
 ## Misc

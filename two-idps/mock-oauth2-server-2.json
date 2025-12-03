@@ -2,14 +2,15 @@
   "tokenCallbacks": [
     {
       "issuerId": "mockissuer2",
-      "tokenExpiry": 3600,
+      "tokenExpiry": 300,
       "requestMappings": [
         {
           "requestParam": "client_id",
           "match": "Bob",
           "claims": {
             "aud": "https://daml.com/jwt/aud/participant/${participant}",
-            "sub": "${client_id"
+            "sub": "${client_id}",
+            "iss": "http://mockauth2:8080/mockissuer2"
           }
         }
       ]

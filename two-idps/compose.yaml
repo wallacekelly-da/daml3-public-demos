@@ -13,6 +13,7 @@ services:
       - 7575:7575
 
   mockauth1:
+    container_name: mockauth1
     image: ghcr.io/navikt/mock-oauth2-server:3.0.1
     volumes:
       - ./mock-oauth2-server-1.json:/host/mock-oauth2-server-1.json
@@ -23,6 +24,7 @@ services:
       - 8080:8080
 
   mockauth2:
+    container_name: mockauth2
     image: ghcr.io/navikt/mock-oauth2-server:3.0.1
     volumes:
       - ./mock-oauth2-server-2.json:/host/mock-oauth2-server-2.json
