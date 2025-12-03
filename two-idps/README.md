@@ -11,7 +11,7 @@ This illustrates configuring two IDPs within a Canton Participant.
 
     ```
     git clone \
-      https://github.com/wallacekelly-da/daml-public-demos.git \
+      https://github.com/wallacekelly-da/daml3-public-demos.git \
       --single-branch \
       --depth 1 \
       --branch two-idps \
