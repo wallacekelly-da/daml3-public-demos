@@ -78,6 +78,26 @@ This illustrates configuring two IDPs within a Canton Participant.
 
 ## Misc
 
+Get user info using the Participant Admin:
+
+    ```
+    export ADMIN_TOKEN=$( \
+        curl -s http://localhost:8080/mockissuer1/token \
+            -d grant_type=client_credentials \
+            -d client_id=participant_admin \
+            -d client_secret=ignored \
+            -d participant=`echo $PARTICIPANT_ID` \
+            | jq -r '.access_token'
+    ); echo $ADMIN_TOKEN
+    ```
+
+    ```
+    curl --location "http://localhost:7575/v2/users/Alice?identity-provider-id=mockauth1" \
+        --header "Accept: application/json" \
+        --header "Authorization: Bearer $ADMIN_TOKEN"
+    ```
+
+
 Start a Canton Console:
 
 ```
