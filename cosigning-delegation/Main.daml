@@ -1,0 +1,69 @@
+module Main where
+
+import Daml.Script
+
+
+-- a contract signed by multiple parties
+template CosignedContract
+  with
+    counterparties : [Party]
+  where
+    signatory counterparties
+
+
+
+-- a delegation from the signer to the admin
+-- granting authority to sign a CosignedContract
+template CosigningDelegation
+  with
+    admin : Party
+    signer : Party
+  where
+    signatory admin, signer
+    
+    -- sign for a collection of parties
+    nonconsuming choice CreateCosignedContract : ContractId CosignedContract
+      with
+        others : [ContractId CosigningDelegation]
+      controller admin
+      do exercise self SignRecursively with
+          signatures = []
+          remaining = others
+
+    -- recursive; use CreateCosignedContract instead for convenience
+    nonconsuming choice SignRecursively : ContractId CosignedContract
+      with
+        signatures : [Party]
+        remaining : [ContractId CosigningDelegation]
+      controller admin, signatures
+      do
+        case remaining of
+          [] -> create CosignedContract with counterparties = this.signer :: signatures
+          nextCid :: rest -> do
+              exercise nextCid SignRecursively with
+                signatures = this.signer :: signatures
+                remaining = rest
+
+
+demo : Script (ContractId CosignedContract)
+demo = script do
+
+  -- setup
+  admin <- allocatePartyByHint (PartyIdHint "Admin")
+  bob <- allocatePartyByHint (PartyIdHint "Bob")
+  charlie <- allocatePartyByHint (PartyIdHint "Charlie")
+  daniel <- allocatePartyByHint (PartyIdHint "Daniel")
+  evelyn <- allocatePartyByHint (PartyIdHint "Evelyn")
+  -- todo: replace the following with propose/accept
+  bobDelegation <- submit (actAs admin <> actAs bob) do
+    createCmd CosigningDelegation with admin, signer = bob
+  charliesDelegation <- submit (actAs admin <> actAs charlie) do
+    createCmd CosigningDelegation with admin, signer = charlie
+  danielDelegation <- submit (actAs admin <> actAs daniel) do
+    createCmd CosigningDelegation with admin, signer = daniel
+
+  -- demo
+  -- admin can create a contract with all the signatories
+  submit admin do
+    exerciseCmd bobDelegation CreateCosignedContract with
+      others = [ charliesDelegation, danielDelegation ]
