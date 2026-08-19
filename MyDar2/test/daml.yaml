@@ -10,4 +10,4 @@ data-dependencies:
   - ../interfaces/.daml/dist/MyInterfacesV2-2.0.0.dar
   - ../main/.daml/dist/MyPackage-2.0.0.dar
 build-options:
-  - -Wno-unused-dependency
+  - --target=2.3

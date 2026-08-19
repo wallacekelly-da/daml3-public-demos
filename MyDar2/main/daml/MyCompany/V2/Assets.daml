@@ -11,6 +11,9 @@ template Asset
     signatory assetId.issuer
     observer owner
 
+    key assetId : AssetId
+    maintainer key.issuer
+
     interface instance IAsset for Asset where
 
       view = AssetView with

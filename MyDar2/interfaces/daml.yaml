@@ -5,3 +5,5 @@ version: 2.0.0
 dependencies:
   - daml-prim
   - daml-stdlib
+build-options:
+  - --target=2.3

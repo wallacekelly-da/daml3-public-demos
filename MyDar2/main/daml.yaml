@@ -9,5 +9,6 @@ data-dependencies:
   - ../interfaces/.daml/dist/MyInterfacesV2-2.0.0.dar
 upgrades: ../../MyDar1/main/.daml/dist/MyPackage-1.0.0.dar
 build-options:
+  - --target=2.3
   - -Wno-template-has-new-interface-instance
 
