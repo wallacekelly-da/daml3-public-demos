@@ -6,6 +6,7 @@ data AssetId = AssetId with
   deriving(Eq, Show)
 
 data AssetView = AssetView with
+    version : Text
     assetId : AssetId
     owner   : Party
   deriving(Eq, Show)
@@ -14,16 +15,16 @@ interface IAsset where
 
   viewtype AssetView
 
-  give : Party -> Update (ContractId IAsset)
-  revert : Update (ContractId IAsset)
+  giveAsset : Party -> Update (ContractId IAsset)
+  returnAsset : Update (ContractId IAsset)
 
-  choice Give : ContractId IAsset
+  choice GiveAsset : ContractId IAsset
     with newOwner : Party
     controller (view this).owner
     do
-      give this newOwner
+      giveAsset this newOwner
 
-  choice Revert : ContractId IAsset
+  choice ReturnAsset : ContractId IAsset
     controller (view this).assetId.issuer
     do
-      revert this
+      returnAsset this

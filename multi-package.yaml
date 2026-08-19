@@ -1,5 +1,5 @@
+sdk-version: 3.5.5
 packages:
-- MyDar1/interfaces
 - MyDar1/main
 - MyDar1/test
 - MyDar2/interfaces

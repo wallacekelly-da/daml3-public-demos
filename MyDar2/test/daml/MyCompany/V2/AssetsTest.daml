@@ -1,67 +1,29 @@
 module MyCompany.V2.AssetsTest where
 
+import Daml.Script
 import DA.Foldable(forA_)
-import qualified MyCompany.V1.Assets as V1
-import qualified MyCompany.V2.Assets as V2
+
 import qualified MyCompany.V2.Interfaces as V2
 
-import Daml.Script
+listAssets : SetupResult -> Script ()
+listAssets a@(SetupResult {..}) = do
 
--- setup : Script SetupResult
--- setup = script do
---
---   alice <- allocatePartyByHint (PartyIdHint "Alice")
---   bob <- allocatePartyByHint (PartyIdHint "Bob")
---   charlie <- allocatePartyByHint (PartyIdHint "Charlie")
---   daniel <- allocatePartyByHint (PartyIdHint "Daniel")
---
---   submit alice do
---     createCmd Asset with
---       issuer = alice
---       owner = bob
---       name = "TV"
---
---   submit alice do
---     createCmd Asset with
---       issuer = alice
---       owner = charlie
---       name = "VHS"
---
---   submit alice do
---     createCmd Asset with
---       issuer = alice
---       owner = daniel
---       name = "DVD"
---
---   assets <- query @Asset alice
---   forA_ assets \(_, asset) -> do
---     debugRaw $ "V1 " <> asset.name <> " " <> (show asset.owner)
---
---   pure $ SetupResult alice bob charlie daniel
-
-list : SetupResult -> Script ()
-list a@(SetupResult {..}) = do
-
-  assetsV1 <- query @V1.Asset alice
-  forA_ assetsV1 \(_, asset) -> do
-    debugRaw $ "V1 " <> asset.name <> " " <> (show asset.owner)
-
-  assetsV2 <- query @V2.Asset alice
-  forA_ assetsV2 \(_, asset) -> do
-    debugRaw $ "V2 " <> asset.assetId.name <> " " <> (show asset.owner)
+  assets <- queryInterface @V2.IAsset alice
+  forA_ assets \(_, Some asset) -> do
+    debugRaw $ asset.version <> " " <> asset.assetId.name <> " " <> (show asset.owner)
 
   pure()
 
-give : SetupResult -> Script ()
-give a@(SetupResult {..}) = do
+returnAssets : SetupResult -> Script ()
+returnAssets a@(SetupResult {..}) = do
 
   assets <- queryInterface @V2.IAsset alice
   let asset = find (\(cid, Some asset) -> asset.owner /= alice) assets
   case asset of
     Some(cid, Some a) -> do
-      debugRaw $ "Giving " <> (show a.assetId.name) <> " to Alice"
+      debugRaw $ "Returning " <> (show a.assetId.name) <> " to Alice"
       submit a.owner do
-        exerciseCmd cid V2.Give with newOwner = alice
+        exerciseCmd cid V2.ReturnAsset
       pure()
     _ -> debugRaw "All assets are owned by Alice"
   pure()

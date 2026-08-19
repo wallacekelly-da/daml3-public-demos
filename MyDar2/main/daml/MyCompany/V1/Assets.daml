@@ -1,6 +1,5 @@
 module MyCompany.V1.Assets where
 
-import qualified MyCompany.V1.Interfaces as V1
 import qualified MyCompany.V2.Interfaces as V2
 import qualified MyCompany.V2.Assets as V2
 
@@ -14,30 +13,28 @@ template Asset
     signatory issuer
     observer owner
 
-    interface instance V1.IAsset for Asset where
-
-      view = V1.AssetView with
-        issuer = issuer
-        owner  = owner
-        name   = name
-
-      give (newOwner : Party) = do
-        cid <- create this with owner = newOwner
-        return (toInterfaceContractId cid)
+    choice GiveAsset : ContractId Asset
+      with
+        newOwner : Party
+      controller owner
+      do
+        -- create this with owner = newOwner
+        fail "Upgrade to V2."
 
     interface instance V2.IAsset for Asset where
 
       view = V2.AssetView with
+        version = "V1"
         assetId = V2.AssetId issuer name
         owner   = owner
 
-      give (newOwner : Party) = do
+      giveAsset (newOwner : Party) = do
         cid <- create V2.Asset with
           assetId = V2.AssetId issuer name
           owner = newOwner
         return (toInterfaceContractId cid)
 
-      revert = do
+      returnAsset = do
         cid <- create V2.Asset with
           assetId = V2.AssetId issuer name
           owner = this.issuer

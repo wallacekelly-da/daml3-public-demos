@@ -1,4 +1,4 @@
-sdk-version: 3.5.2
+sdk-version: 3.5.5
 name: MyPackage
 source: daml
 version: 1.0.0
@@ -6,4 +6,4 @@ dependencies:
   - daml-prim
   - daml-stdlib
 data-dependencies:
-  - ../interfaces/.daml/dist/MyInterfacesV1-1.0.0.dar
+  # - ../interfaces/.daml/dist/MyInterfacesV1-1.0.0.dar

@@ -1,7 +1,5 @@
 module MyCompany.V1.Assets where
 
-import MyCompany.V1.Interfaces
-
 template Asset
   with
     issuer : Party
@@ -12,14 +10,9 @@ template Asset
     signatory issuer
     observer owner
 
-    interface instance IAsset for Asset where
-
-      view = AssetView with
-        issuer = issuer
-        owner  = owner
-        name   = name
-
-      give (newOwner : Party) = do
-        cid <- create this with owner = newOwner
-        return (toInterfaceContractId cid)
-
+    choice GiveAsset : ContractId Asset
+      with
+        newOwner : Party
+      controller owner
+      do
+        create this with owner = newOwner

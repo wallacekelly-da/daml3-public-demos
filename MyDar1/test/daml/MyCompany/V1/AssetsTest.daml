@@ -2,7 +2,6 @@ module MyCompany.V1.AssetsTest where
 
 import DA.Foldable(forA_)
 import MyCompany.V1.Assets
-import MyCompany.V1.Interfaces
 
 import Daml.Script
 
@@ -13,10 +12,10 @@ createAsset issuer name = submit issuer do
     owner  = issuer
     name   = name
 
-giveAsset : Party -> Party -> (ContractId IAsset) -> Script (ContractId IAsset)
+giveAsset : Party -> Party -> (ContractId Asset) -> Script (ContractId Asset)
 giveAsset owner newOwner cid =
   submit owner do
-    exerciseCmd cid Give with newOwner = newOwner
+    exerciseCmd cid GiveAsset with newOwner = newOwner
 
 setup : Script SetupResult
 setup = script do
@@ -30,16 +29,16 @@ setup = script do
   createAsset alice "VHS"
   createAsset alice "DVD"
 
-  assets <- queryInterface @IAsset alice
-  forA_ assets \(cid, Some asset) -> do
+  assets <- query @Asset alice
+  forA_ assets \(cid, asset) -> do
     case asset.name of
       "TV" -> giveAsset alice bob cid
       "VHS" -> giveAsset alice charlie cid
       "DVD" -> giveAsset alice daniel cid
       _ -> error "Unexpected asset name"
 
-  assets <- queryInterface @IAsset alice
-  forA_ assets \(_, Some asset) ->
+  assets <- query @Asset alice
+  forA_ assets \(_, asset) ->
     debugRaw $ "V1 " <> asset.name <> " " <> (show asset.owner)
 
   pure $ SetupResult alice bob charlie daniel
@@ -49,3 +48,4 @@ data SetupResult = SetupResult with
   bob : Party
   charlie : Party
   daniel : Party
+
