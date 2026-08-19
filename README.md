@@ -60,7 +60,7 @@ git clone \
 1. Seed the ledger with V1 contracts.
 1. Upload the V2 DAR.
 1. Query the ledger using the V2 interface.
-1. Transfer an asset, noting that it was upgrades to V2 in the process.
+1. Transfer an asset, noting that it was upgraded to V2 in the process.
 1. Transfer the remaining assets.
 1. Unvet the V1 package after all assets are upgraded.
 
