@@ -5,5 +5,4 @@ version: 1.0.0
 dependencies:
   - daml-prim
   - daml-stdlib
-data-dependencies:
-  # - ../interfaces/.daml/dist/MyInterfacesV1-1.0.0.dar
+
