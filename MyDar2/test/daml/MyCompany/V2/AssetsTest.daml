@@ -3,6 +3,7 @@ module MyCompany.V2.AssetsTest where
 import Daml.Script
 import DA.Foldable(forA_)
 
+import MyCompany.V2.Assets() -- force package to be included in the DAR
 import qualified MyCompany.V2.Interfaces as V2
 
 listAssets : SetupResult -> Script ()
@@ -14,15 +15,15 @@ listAssets a@(SetupResult {..}) = do
 
   pure()
 
-returnAssets : SetupResult -> Script ()
-returnAssets a@(SetupResult {..}) = do
+returnAsset : SetupResult -> Script ()
+returnAsset a@(SetupResult {..}) = do
 
   assets <- queryInterface @V2.IAsset alice
   let asset = find (\(cid, Some asset) -> asset.owner /= alice) assets
   case asset of
     Some(cid, Some a) -> do
-      debugRaw $ "Returning " <> (show a.assetId.name) <> " to Alice"
-      submit a.owner do
+      debugRaw $ "Returning " <> a.assetId.name <> " to Alice"
+      submit a.assetId.issuer do
         exerciseCmd cid V2.ReturnAsset
       pure()
     _ -> debugRaw "All assets are owned by Alice"

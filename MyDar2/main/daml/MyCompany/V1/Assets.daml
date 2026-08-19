@@ -32,10 +32,10 @@ template Asset
         cid <- create V2.Asset with
           assetId = V2.AssetId issuer name
           owner = newOwner
-        return (toInterfaceContractId cid)
+        return $ toInterfaceContractId @V2.IAsset cid
 
       returnAsset = do
         cid <- create V2.Asset with
           assetId = V2.AssetId issuer name
           owner = this.issuer
-        return (toInterfaceContractId cid)
+        return $ toInterfaceContractId @V2.IAsset cid
