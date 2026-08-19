@@ -25,3 +25,4 @@ shell.log
 ui-backend-*.conf
 *~
 *#
+setup.json
