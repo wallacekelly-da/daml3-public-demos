@@ -1,0 +1,14 @@
+dk-version: 3.5.2
+name: MyPackage
+source: daml
+version: 2.0.0
+dependencies:
+  - daml-prim
+  - daml-stdlib
+data-dependencies:
+  - ../../MyDar1/interfaces/.daml/dist/MyInterfacesV1-1.0.0.dar
+  - ../interfaces/.daml/dist/MyInterfacesV2-2.0.0.dar
+upgrades: ../../MyDar1/main/.daml/dist/MyPackage-1.0.0.dar
+build-options:
+  - -Wno-template-has-new-interface-instance
+

@@ -1,0 +1,6 @@
+sdk-version: 3.5.2
+
+packages:
+- ./interfaces/
+- ./main
+- ./test

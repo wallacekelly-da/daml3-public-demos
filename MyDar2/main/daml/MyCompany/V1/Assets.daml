@@ -1,0 +1,44 @@
+module MyCompany.V1.Assets where
+
+import qualified MyCompany.V1.Interfaces as V1
+import qualified MyCompany.V2.Interfaces as V2
+import qualified MyCompany.V2.Assets as V2
+
+template Asset
+  with
+    issuer : Party
+    owner  : Party
+    name   : Text
+  where
+    ensure name /= ""
+    signatory issuer
+    observer owner
+
+    interface instance V1.IAsset for Asset where
+
+      view = V1.AssetView with
+        issuer = issuer
+        owner  = owner
+        name   = name
+
+      give (newOwner : Party) = do
+        cid <- create this with owner = newOwner
+        return (toInterfaceContractId cid)
+
+    interface instance V2.IAsset for Asset where
+
+      view = V2.AssetView with
+        assetId = V2.AssetId issuer name
+        owner   = owner
+
+      give (newOwner : Party) = do
+        cid <- create V2.Asset with
+          assetId = V2.AssetId issuer name
+          owner = newOwner
+        return (toInterfaceContractId cid)
+
+      revert = do
+        cid <- create V2.Asset with
+          assetId = V2.AssetId issuer name
+          owner = this.issuer
+        return (toInterfaceContractId cid)

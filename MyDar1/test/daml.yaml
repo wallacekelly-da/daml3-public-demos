@@ -1,0 +1,11 @@
+sdk-version: 3.5.2
+name: MyTestsV1
+source: daml
+version: 0.0.1
+dependencies:
+  - daml-prim
+  - daml-stdlib
+  - daml-script
+data-dependencies:
+  - ../interfaces/.daml/dist/MyInterfacesV1-1.0.0.dar
+  - ../main/.daml/dist/MyPackage-1.0.0.dar

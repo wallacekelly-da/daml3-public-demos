@@ -1,0 +1,18 @@
+module MyCompany.V1.Interfaces where
+
+data AssetView = AssetView with
+  issuer : Party
+  owner  : Party
+  name   : Text
+
+interface IAsset where
+
+  viewtype AssetView
+
+  give : Party -> Update (ContractId IAsset)
+
+  choice Give : ContractId IAsset
+    with newOwner : Party
+    controller (view this).owner
+    do
+      give this newOwner

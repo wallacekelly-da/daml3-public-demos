@@ -1,0 +1,27 @@
+module MyCompany.V2.Assets where
+
+import MyCompany.V2.Interfaces
+
+template Asset
+  with
+    assetId : AssetId
+    owner  : Party
+  where
+    ensure assetId.name /= ""
+    signatory assetId.issuer
+    observer owner
+
+    interface instance IAsset for Asset where
+
+      view = AssetView with
+        assetId = assetId
+        owner = owner
+
+      revert = do
+        cid <- create this with owner = assetId.issuer
+        return (toInterfaceContractId cid)
+
+      give (newOwner : Party) = do
+        cid <- create this with owner = newOwner
+        return (toInterfaceContractId cid)
+

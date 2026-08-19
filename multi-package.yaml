@@ -1,0 +1,7 @@
+packages:
+- MyDar1/interfaces
+- MyDar1/main
+- MyDar1/test
+- MyDar2/interfaces
+- MyDar2/main
+- MyDar2/test
