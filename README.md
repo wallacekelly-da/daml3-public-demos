@@ -51,6 +51,8 @@ Sign the prepared transaction within the budget, then wait until shortly before 
 The transaction is accepted if it is recorded within 60 seconds of T: executing too early or too late is rejected, and a new transaction must be prepared and signed.
 The procedure works for any externally signed transaction, not only those that depend on time.
 
+For more detail, see [min-ledger-time.md](./min-ledger-time.md).
+
 ## Demo Steps
 
 The setup steps (1–5) put the ledger in a state where `Alice`, an external party, can exercise a time-dependent choice as often as she likes.
@@ -332,3 +334,19 @@ The scenario steps (6–9) then prepare, sign and execute that choice with diffe
       "requestedAt": "2026-10-23T16:59:03Z"
     }
     ```
+
+## Environment
+
+This demo was developed and tested with:
+
+| Component | Version |
+|---|---|
+| macOS (Apple silicon) | 26.7.1 |
+| zsh | 5.9 |
+| dpm | 1.0.22 |
+| Daml SDK | 3.6.3 (sandbox runs Canton 3.6.3) |
+| Java (OpenJDK) | 21.0.12 |
+| OpenSSL (Homebrew `openssl@3`) | 3.6.3 |
+| jq | 1.8.2 |
+| curl | 8.21.0 |
+
