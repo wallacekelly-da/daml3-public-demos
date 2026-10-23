@@ -1,5 +1,5 @@
-sdk-version: 3.5.12
-name: MinLedgerTime-main
+sdk-version: 3.6.3
+name: MinLedgerTime
 source: Main.daml
 version: 0.0.1
 dependencies:

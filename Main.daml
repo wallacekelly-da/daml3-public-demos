@@ -1,21 +1,29 @@
 module Main where
 
-type AssetId = ContractId Asset
-
-template Asset
+template Service
   with
-    issuer : Party
-    owner  : Party
-    name   : Text
+    provider : Party
+    customer : Party
   where
-    ensure name /= ""
-    signatory issuer
-    observer owner
-    choice Give : AssetId
+    signatory provider
+    observer customer
+    nonconsuming choice MakeRequest : ContractId Request
       with
-        newOwner : Party
-      controller owner
+        note : Text
+      controller customer
       do
-        _ <- getTime
-        create this with
-           owner = newOwner
+        now <- getTime
+        create Request with
+          provider
+          customer
+          note
+          requestedAt = now
+
+template Request
+  with
+    provider    : Party
+    customer    : Party
+    note        : Text
+    requestedAt : Time
+  where
+    signatory provider, customer
